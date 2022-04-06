@@ -15,12 +15,16 @@ type HealthCheckHandler struct {
 
 func (h HealthCheckHandler) HealthCheck(ctx echo.Context) (err error) {
 	err = h.Services.HealthCheck.HealthCheckDbMysql()
-	uptime := ctx.Get(commons.API_SERVER_TIME_KEY).(time.Time)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, payload.ResponseFailedWithData("DB is unhealty", err))
 		return
 	}
-
+	err = h.Services.HealthCheck.HealthCheckDbCache()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, payload.ResponseFailedWithData("Cache is unhealty", err))
+		return
+	}
+	uptime := ctx.Get(commons.API_SERVER_TIME_KEY).(time.Time)
 	data := payload.HealthCheckModel{
 		Status:  "OK",
 		Runtime: "go1.16",

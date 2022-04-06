@@ -38,6 +38,7 @@ type Provider interface {
 	IsSet(key string) bool
 	GetDatabaseConfig() DatabaseConfig
 	GetAppConfig() AppConfig
+	GetRedisConfig() RedisConfig
 }
 
 type DatabaseConfig struct {
@@ -75,6 +76,14 @@ func (c *AppConfigs) GetDatabaseConfig() DatabaseConfig {
 
 func (c *AppConfigs) GetAppConfig() AppConfig {
 	var config AppConfig
+	lock.Lock()
+	defer lock.Unlock()
+	c.Unmarshal(&config)
+	return config
+}
+
+func (c *AppConfigs) GetRedisConfig() RedisConfig {
+	var config RedisConfig
 	lock.Lock()
 	defer lock.Unlock()
 	c.Unmarshal(&config)

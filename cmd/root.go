@@ -35,16 +35,17 @@ var rootCmd = &cobra.Command{
 			log.Info("Auto migrate")
 			database.Migrate(dbMysql)
 		}
-
+		cachePool, err := app.GetCachedPool()
 		if err != nil {
 			log.Fatalf("Failed to start, error connect to DB Redis | %v", err)
 			return
 		}
 
 		opt := commons.Options{
-			Config:  cfg,
-			DbMysql: dbMysql,
-			Logger:  log,
+			Config:    cfg,
+			DbMysql:   dbMysql,
+			Logger:    log,
+			CachePool: cachePool,
 		}
 
 		start(opt)
@@ -80,15 +81,22 @@ func start(opt commons.Options) {
 }
 
 func wiringRepository(repoOption repository.Option) *repository.Repository {
-	repo := repository.Repository{}
+	cacheRepo := repository.NewCacheRepository(repoOption)
+	authRepo := repository.NewAuthRepository(repoOption)
+	repo := repository.Repository{
+		Auth:  authRepo,
+		Cache: cacheRepo,
+	}
 
 	return &repo
 }
 
 func wiringService(serviceOption service.Option) *service.Services {
 	hc := service.NewHealthCheck(serviceOption)
+	auth := service.NewAuthService(serviceOption)
 	svc := service.Services{
 		HealthCheck: hc,
+		Auth:        auth,
 	}
 
 	return &svc

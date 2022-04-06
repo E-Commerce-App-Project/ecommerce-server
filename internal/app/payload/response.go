@@ -21,3 +21,8 @@ type HealthCheckResponseSuccessBody struct {
 	ResponseSuccessWithoutDataBody
 	Data HealthCheckModel `json:"data"`
 } //@name HealthCheckResponseSuccess
+
+type AuthResponseSuccessBody struct {
+	ResponseSuccessWithoutDataBody
+	Data AuthModel `json:"data"`
+} //@name AuthResponseSuccess

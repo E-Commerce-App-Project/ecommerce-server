@@ -17,3 +17,8 @@ func (hm *HealthCheckServiceMockTest) HealthCheckDbMysql() error {
 	args := hm.Called()
 	return args.Error(0)
 }
+
+func (hm *HealthCheckServiceMockTest) HealthCheckDbCache() error {
+	args := hm.Called()
+	return args.Error(0)
+}

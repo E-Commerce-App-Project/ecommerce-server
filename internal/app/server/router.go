@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"regexp"
 
+	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/commons"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/handler"
 	_middleware "github.com/E-Commerce-App-Project/ecommerce-server/internal/app/middleware"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/payload"
@@ -13,25 +14,29 @@ import (
 )
 
 func intiRouter(e *echo.Echo, opt handler.HandlerOption) (err error) {
-	initErrorHandler(e, opt)
+	e.HTTPErrorHandler = initErrorHandler(opt)
 	healthCheckHandler := handler.HealthCheckHandler{}
 	healthCheckHandler.HandlerOption = opt
+	authHandler := handler.AuthHandler{}
+	authHandler.HandlerOption = opt
 
 	// global middleware
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 	}))
 	e.Use(_middleware.MiddlewareLogging(opt.Options))
-
+	jwtAuthGuard := []echo.MiddlewareFunc{_middleware.JTWAuthMiddleware(opt.Options), _middleware.CurrentUserMiddleware(opt)}
 	// register all handler here
 	apiV1 := e.Group("/api/v1")
 	apiV1.Use(_middleware.MiddlewareUpTime())
 	apiV1.GET("/health_check", healthCheckHandler.HealthCheck)
-
+	apiV1.POST("/login", authHandler.Login)
+	apiV1.POST("/register", authHandler.Register)
+	apiV1.POST("/logout", authHandler.Logout, jwtAuthGuard...)
 	return
 }
 
-func initErrorHandler(e *echo.Echo, opt handler.HandlerOption) echo.HTTPErrorHandler {
+func initErrorHandler(opt handler.HandlerOption) echo.HTTPErrorHandler {
 	return func(err error, c echo.Context) {
 		report, ok := err.(*echo.HTTPError)
 		if ok {
@@ -40,7 +45,7 @@ func initErrorHandler(e *echo.Echo, opt handler.HandlerOption) echo.HTTPErrorHan
 			opt.Logger.Error(fmt.Sprintf("http error %d - %v", report.Code, message))
 			if isApiPath {
 				if message == "missing or malformed jwt" {
-					c.JSON(http.StatusUnauthorized, payload.ResponseFailed("request not authorized"))
+					c.JSON(http.StatusUnauthorized, payload.ResponseFailedWithData("request not authorized", commons.ErrAuthorization))
 					return
 				}
 				c.JSON(report.Code, payload.ResponseFailed(message.(string)))
@@ -65,5 +70,7 @@ func initErrorHandler(e *echo.Echo, opt handler.HandlerOption) echo.HTTPErrorHan
 			opt.Logger.Error(err.Error())
 			return
 		}
+
+		return
 	}
 }
