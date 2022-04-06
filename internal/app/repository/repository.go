@@ -10,4 +10,5 @@ type Option struct {
 // Repository all repo object injected here
 type Repository struct {
 	// TODO: add all repo object here
+	Auth IAuthRepository
 }

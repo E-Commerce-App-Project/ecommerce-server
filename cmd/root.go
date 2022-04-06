@@ -80,7 +80,10 @@ func start(opt commons.Options) {
 }
 
 func wiringRepository(repoOption repository.Option) *repository.Repository {
-	repo := repository.Repository{}
+	authRepo := repository.NewAuthRepository(repoOption)
+	repo := repository.Repository{
+		Auth: authRepo,
+	}
 
 	return &repo
 }
