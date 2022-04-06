@@ -12,4 +12,5 @@ type Repository struct {
 	// TODO: add all repo object here
 	Auth  IAuthRepository
 	Cache ICacheRepository
+	User  IUserRepository
 }

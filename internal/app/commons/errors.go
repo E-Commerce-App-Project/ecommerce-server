@@ -29,3 +29,13 @@ var ErrInvalidCredential = errors.New("InvalidCredentialError")
 var ErrInvalidData = errors.New("InvalidValueError")
 
 var ErrJWTGenerate = errors.New("JWTGenerateError")
+
+var ErrUpdate = errors.New("Update Error")
+
+var ErrCreateUser = errors.New("Createe User Error")
+
+var ErrGetAll = errors.New("Get All Error")
+
+var ErrGetUserByID = errors.New("Get User By id Error")
+
+var ErrDeleteUser = errors.New("Delete User Error")
