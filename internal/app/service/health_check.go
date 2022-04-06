@@ -4,6 +4,7 @@ import "github.com/E-Commerce-App-Project/ecommerce-server/internal/app/commons"
 
 type IHealthCheck interface {
 	HealthCheckDbMysql() error
+	HealthCheckDbCache() error
 }
 
 type healthCheck struct {
@@ -22,5 +23,20 @@ func (h *healthCheck) HealthCheckDbMysql() (err error) {
 		defer d.Close()
 		err = commons.ErrDBConn
 	}
+	return
+}
+
+func (h *healthCheck) HealthCheckDbCache() (err error) {
+	cacheConn := h.opt.CachePool.Get()
+	_, err = cacheConn.Do("PING")
+	if err != nil {
+		h.opt.Logger.Panicf("Failed to ping cache | %v", err)
+		err = commons.ErrCacheConn
+
+		return
+	}
+
+	defer cacheConn.Close()
+
 	return
 }
