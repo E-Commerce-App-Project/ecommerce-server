@@ -1,6 +1,8 @@
 package commons
 
 import (
+	"time"
+
 	"github.com/E-Commerce-App-Project/ecommerce-server/config"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/logger"
 	"github.com/gomodule/redigo/redis"
@@ -8,7 +10,8 @@ import (
 )
 
 const (
-	CTX_USER_KEY = "user"
+	CTX_USER_KEY      = "user"
+	EXIRED_TOKEN_TIME = time.Hour * 24 * 7
 )
 
 // Options common option for all object that needed

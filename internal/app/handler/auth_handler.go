@@ -26,6 +26,10 @@ func (ah AuthHandler) Login(ctx echo.Context) (err error) {
 		if err == commons.ErrInvalidCredential {
 			return ctx.JSON(http.StatusBadRequest, payload.ResponseFailedWithData("Invalid email or password", err))
 		}
+
+		if err == commons.ErrCacheConn {
+			return ctx.JSON(http.StatusInternalServerError, payload.ResponseFailedWithData("Failed to store token", err))
+		}
 		return ctx.JSON(http.StatusInternalServerError, payload.ResponseFailedWithData("Internal server error", err))
 	}
 	return ctx.JSON(http.StatusOK, payload.ResponseSuccess("Login success", authResult))
@@ -46,6 +50,9 @@ func (ah AuthHandler) Register(ctx echo.Context) (err error) {
 		}
 		if err == commons.ErrPhoneExistError {
 			return ctx.JSON(http.StatusBadRequest, payload.ResponseFailedWithData("Phone already exists", err))
+		}
+		if err == commons.ErrCacheConn {
+			return ctx.JSON(http.StatusInternalServerError, payload.ResponseFailedWithData("Failed to store token", err))
 		}
 		return ctx.JSON(http.StatusInternalServerError, payload.ResponseFailedWithData("Internal server error", err))
 	}

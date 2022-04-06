@@ -8,6 +8,7 @@ import (
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/database"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/payload"
 	"github.com/golang-jwt/jwt"
+	"github.com/gomodule/redigo/redis"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -37,7 +38,6 @@ func (au *authService) Login(data payload.LoginPayload) (payload.AuthModel, erro
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data.Password)); err != nil {
-		fmt.Print(user.Password, " ", data.Password)
 		return payload.AuthModel{}, commons.ErrInvalidCredential
 	}
 
@@ -55,7 +55,7 @@ func (au *authService) GetToken(user database.UserEntity) (payload.AuthModel, er
 	authResult.UserID = user.ID
 	authResult.Payload = payload.AuthToken
 	authResult.TokenType = "Bearer"
-	err = au.opt.Cache.WriteCache(authResult.Payload, authResult.UserID, time.Until(payload.Expired))
+	err = au.opt.Cache.WriteCache(authResult.Payload, fmt.Sprint(authResult.UserID), commons.EXIRED_TOKEN_TIME)
 	if err != nil {
 		return authResult, commons.ErrCacheConn
 	}
@@ -64,7 +64,7 @@ func (au *authService) GetToken(user database.UserEntity) (payload.AuthModel, er
 }
 
 func (au *authService) ClaimToken(user database.UserEntity) (payload.JWTClaimResult, error) {
-	expiredDuration := time.Now().Add(time.Hour * 72)
+	expiredDuration := time.Now().Add(commons.EXIRED_TOKEN_TIME)
 	claims := &payload.JWTCustomClaims{
 		Email: user.Email,
 		StandardClaims: jwt.StandardClaims{
@@ -123,11 +123,9 @@ func (au *authService) Logout(token string) bool {
 func (au *authService) CheckValidToken(token string, userID uint) bool {
 	// check token in redis
 	data, err := au.opt.Cache.ReadCache(token)
+	result, err := redis.Uint64(data, err)
 	if err != nil {
 		return false
 	}
-	if id, ok := data.(uint); ok {
-		return id == userID
-	}
-	return false
+	return uint(result) == userID
 }
