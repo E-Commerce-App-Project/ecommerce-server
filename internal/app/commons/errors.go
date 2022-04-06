@@ -21,3 +21,7 @@ var ErrPhoneExistError = errors.New("PhoneExistError")
 var ErrHashPassword = errors.New("HashPasswordError")
 
 var ErrAuthorization = errors.New("AuthorizationError")
+
+var ErrParsingBody = errors.New("ParsingBodyError")
+
+var ErrInvalidCredential = errors.New("InvalidCredentialError")

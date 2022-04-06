@@ -31,11 +31,11 @@ func (au *authService) Login(data payload.LoginPayload) (payload.AuthModel, erro
 
 	user, err := au.opt.Auth.GetUserByEmail(data.Email)
 	if err != nil {
-		return payload.AuthModel{}, err
+		return payload.AuthModel{}, commons.ErrInvalidCredential
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data.Password)); err != nil {
-		return payload.AuthModel{}, err
+		return payload.AuthModel{}, commons.ErrInvalidCredential
 	}
 
 	return au.GetToken(user)
