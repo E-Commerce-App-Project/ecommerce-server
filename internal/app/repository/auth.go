@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"strings"
+
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/commons"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/database"
 	"github.com/go-sql-driver/mysql"
@@ -37,14 +39,25 @@ func (r *authRepository) RegisterUser(user database.UserEntity) (database.UserEn
 		Password:    user.Password,
 		Name:        user.Name,
 		PhoneNumber: user.PhoneNumber,
+		Address:     user.Address,
 	}
 	result := r.opt.DbMysql.Create(&userData)
 	if result.Error != nil {
 		mysqlErrorNumber := result.Error.(*mysql.MySQLError).Number
 		switch mysqlErrorNumber {
 		case 1062:
-			return userData, commons.ErrEmailExists
+			phoneError := strings.Split(result.Error.Error(), "phone_number")
+			if len(phoneError) > 1 {
+				return userData, commons.ErrPhoneExistError
+			}
+			emailError := strings.Split(result.Error.Error(), "email")
+			if len(emailError) > 1 {
+				return userData, commons.ErrEmailExists
+			}
+		case 1406:
+			return userData, commons.ErrInvalidData
 		}
+
 		return userData, result.Error
 	}
 

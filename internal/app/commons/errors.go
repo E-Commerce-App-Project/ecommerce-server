@@ -25,3 +25,5 @@ var ErrAuthorization = errors.New("AuthorizationError")
 var ErrParsingBody = errors.New("ParsingBodyError")
 
 var ErrInvalidCredential = errors.New("InvalidCredentialError")
+
+var ErrInvalidData = errors.New("InvalidValueError")

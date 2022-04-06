@@ -35,6 +35,7 @@ func (au *authService) Login(data payload.LoginPayload) (payload.AuthModel, erro
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data.Password)); err != nil {
+		fmt.Print(user.Password, " ", data.Password)
 		return payload.AuthModel{}, commons.ErrInvalidCredential
 	}
 
@@ -85,7 +86,7 @@ func (au *authService) ClaimToken(user database.UserEntity) (payload.JWTClaimRes
 }
 
 func (au authService) hashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	return string(bytes), err
 }
 
@@ -99,9 +100,10 @@ func (au *authService) Register(data payload.RegisterPayload) (payload.AuthModel
 
 	userData := database.UserEntity{}
 	userData.Email = data.Email
-	userData.Password = data.Password
+	userData.Password = hashedPassword
 	userData.Name = data.Name
-	userData.PhoneNumber = hashedPassword
+	userData.PhoneNumber = data.Phone
+	userData.Address = data.Address
 	user, err = au.opt.Auth.RegisterUser(userData)
 	if err != nil {
 		return payload.AuthModel{}, err
