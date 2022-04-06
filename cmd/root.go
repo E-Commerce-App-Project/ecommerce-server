@@ -90,8 +90,10 @@ func wiringRepository(repoOption repository.Option) *repository.Repository {
 
 func wiringService(serviceOption service.Option) *service.Services {
 	hc := service.NewHealthCheck(serviceOption)
+	auth := service.NewAuthService(serviceOption)
 	svc := service.Services{
 		HealthCheck: hc,
+		Auth:        auth,
 	}
 
 	return &svc
