@@ -2,10 +2,12 @@ package middleware
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/commons"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/handler"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/payload"
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -13,12 +15,20 @@ func CurrentUserMiddleware(options handler.HandlerOption) echo.MiddlewareFunc {
 
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			user := c.Get("user")
-			if user == nil {
-				c.Response().WriteHeader(http.StatusUnauthorized)
-				return c.JSON(http.StatusUnauthorized, payload.ResponseFailed(commons.ErrAuthorization.Error()))
+			user := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
+			claims := user.Claims.(*payload.JWTCustomClaims)
+			if id, ok := strconv.ParseUint(claims.StandardClaims.Subject, 10, 32); ok != nil {
+
+				hasLogged := options.Auth.CheckValidToken(user.Raw, uint(id))
+				if !hasLogged {
+					c.Response().WriteHeader(http.StatusUnauthorized)
+					return c.JSON(http.StatusUnauthorized, payload.ResponseFailed("Unauthorized"))
+				}
+				return next(c)
 			}
-			return next(c)
+
+			c.Response().WriteHeader(http.StatusUnauthorized)
+			return c.JSON(http.StatusUnauthorized, payload.ResponseFailed("Unauthorized"))
 		}
 	}
 }

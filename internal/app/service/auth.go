@@ -15,6 +15,8 @@ type IAuthService interface {
 	Login(data payload.LoginPayload) (payload.AuthModel, error)
 	Register(data payload.RegisterPayload) (payload.AuthModel, error)
 	ClaimToken(user database.UserEntity) (payload.JWTClaimResult, error)
+	Logout(token string) bool
+	CheckValidToken(token string, userID uint) bool
 }
 
 type authService struct {
@@ -46,16 +48,16 @@ func (au *authService) GetToken(user database.UserEntity) (payload.AuthModel, er
 	authResult := payload.AuthModel{}
 	payload, err := au.ClaimToken(user)
 	if err != nil {
-		return authResult, err
+		return authResult, commons.ErrJWTGenerate
 	}
 
 	authResult.Email = user.Email
 	authResult.UserID = user.ID
 	authResult.Payload = payload.AuthToken
 	authResult.TokenType = "Bearer"
-
+	err = au.opt.Cache.WriteCache(authResult.Payload, authResult.UserID, time.Until(payload.Expired))
 	if err != nil {
-		return authResult, err
+		return authResult, commons.ErrCacheConn
 	}
 
 	return authResult, nil
@@ -109,4 +111,23 @@ func (au *authService) Register(data payload.RegisterPayload) (payload.AuthModel
 		return payload.AuthModel{}, err
 	}
 	return au.GetToken(user)
+}
+
+func (au *authService) Logout(token string) bool {
+	// remove token from redis
+	err := au.opt.Cache.DeleteCache(token)
+
+	return err == nil
+}
+
+func (au *authService) CheckValidToken(token string, userID uint) bool {
+	// check token in redis
+	data, err := au.opt.Cache.ReadCache(token)
+	if err != nil {
+		return false
+	}
+	if id, ok := data.(uint); ok {
+		return id == userID
+	}
+	return false
 }

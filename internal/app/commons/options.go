@@ -7,6 +7,10 @@ import (
 	"gorm.io/gorm"
 )
 
+const (
+	CTX_USER_KEY = "user"
+)
+
 // Options common option for all object that needed
 type Options struct {
 	Config    config.Provider

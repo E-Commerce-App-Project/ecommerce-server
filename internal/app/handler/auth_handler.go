@@ -5,6 +5,7 @@ import (
 
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/commons"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/payload"
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -49,4 +50,13 @@ func (ah AuthHandler) Register(ctx echo.Context) (err error) {
 		return ctx.JSON(http.StatusInternalServerError, payload.ResponseFailedWithData("Internal server error", err))
 	}
 	return ctx.JSON(http.StatusOK, payload.ResponseSuccess("Register success", authResult))
+}
+
+func (ah AuthHandler) Logout(ctx echo.Context) (err error) {
+	token := ctx.Get(commons.CTX_USER_KEY).(*jwt.Token)
+	deleted := ah.Services.Auth.Logout(token.Raw)
+	if deleted {
+		return ctx.JSON(http.StatusOK, payload.ResponseSuccess("Logout success", nil))
+	}
+	return ctx.JSON(http.StatusInternalServerError, payload.ResponseFailed("Internal server error"))
 }
