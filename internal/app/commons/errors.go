@@ -19,3 +19,5 @@ var ErrInvalidToken = errors.New("ErrInvalidToken")
 var ErrPhoneExistError = errors.New("PhoneExistError")
 
 var ErrHashPassword = errors.New("HashPasswordError")
+
+var ErrAuthorization = errors.New("AuthorizationError")
