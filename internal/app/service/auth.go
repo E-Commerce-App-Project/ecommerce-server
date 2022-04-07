@@ -66,7 +66,8 @@ func (au *authService) GetToken(user database.UserEntity) (payload.AuthModel, er
 func (au *authService) ClaimToken(user database.UserEntity) (payload.JWTClaimResult, error) {
 	expiredDuration := time.Now().Add(commons.EXIRED_TOKEN_TIME)
 	claims := &payload.JWTCustomClaims{
-		Email: user.Email,
+		Email:  user.Email,
+		UserID: int(user.ID),
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expiredDuration.Unix(),
 			Subject:   fmt.Sprint(user.ID),

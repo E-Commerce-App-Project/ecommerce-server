@@ -29,3 +29,5 @@ var ErrInvalidCredential = errors.New("InvalidCredentialError")
 var ErrInvalidData = errors.New("InvalidValueError")
 
 var ErrJWTGenerate = errors.New("JWTGenerateError")
+
+var ErrQueryDB = errors.New("QueryDBError")

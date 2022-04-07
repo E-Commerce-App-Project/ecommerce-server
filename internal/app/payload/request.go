@@ -12,3 +12,13 @@ type RegisterPayload struct {
 	Password string `json:"password" example:"secret" form:"password"`
 	Address  string `json:"address" example:"Jl. Jenderal Sudirman No. 1" form:"address"`
 } //@name RegisterPayload
+
+type AddProductToCartPayload struct {
+	ProductID uint `json:"product_id" example:"1" form:"product_id"`
+	Quantity  int  `json:"quantity" example:"1" form:"quantity"`
+	UserID    uint `json:"user_id" example:"1" form:"user_id"`
+} //@name AddProductToCartPayload
+
+type GetUserCartPayload struct {
+	UserID int `json:"user_id" example:"1" form:"user_id"`
+} //@name GetUserCartPayload

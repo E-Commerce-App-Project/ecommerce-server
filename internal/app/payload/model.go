@@ -21,11 +21,22 @@ type AuthModel struct {
 } //@name AuthModel
 
 type JWTCustomClaims struct {
-	Email string `json:"email"`
+	Email  string `json:"email"`
+	UserID int    `json:"user_id"`
 	jwt.StandardClaims
 }
 
 type JWTClaimResult struct {
 	Expired   time.Time
 	AuthToken string
+}
+
+type CartModel struct {
+	ID        uint    `json:"id" example:"1"`
+	UserID    uint    `json:"user_id" example:"1"`
+	ProductID uint    `json:"product_id" example:"1"`
+	Image     string  `json:"image" example:"https://example.com/image.jpg"`
+	Name      string  `json:"name" example:"Product Name"`
+	Price     float64 `json:"price" example:"10000"`
+	Quantity  uint    `json:"quantity" example:"1"`
 }
