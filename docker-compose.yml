@@ -38,6 +38,8 @@ services:
       - "${DB_PORT:-3306}:3306"
   redis:
     image: 'redis:alpine'
+    environment:
+      - REDIS_PORT=6379
     volumes:
         - 'redis:/data'
     healthcheck:
