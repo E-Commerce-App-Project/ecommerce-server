@@ -17,6 +17,7 @@ services:
       - DB_ADDRESS=db
       - DB_PORT=${DB_PORT:-3306}
       - REDIS_ADDRESS=redis
+      - REDIS_PASSWORD=pass
       - REDIS_PORT=6379
       - APP_HOST=${APP_HOST}
       - APP_PORT=${APP_PORT:-8000}
@@ -38,7 +39,9 @@ services:
       - "${DB_PORT:-3306}:3306"
   redis:
     image: 'redis:alpine'
+    command: '--requirepass pass'
     environment:
+      - REDIS_PASSWORD=pass
       - REDIS_PORT=6379
     volumes:
         - 'redis:/data'
