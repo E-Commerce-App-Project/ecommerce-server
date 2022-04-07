@@ -21,11 +21,20 @@ type AuthModel struct {
 } //@name AuthModel
 
 type JWTCustomClaims struct {
-	Email string `json:"email"`
+	Email  string `json:"email"`
+	UserID int    `json:"user_id"`
 	jwt.StandardClaims
 }
 
 type JWTClaimResult struct {
 	Expired   time.Time
 	AuthToken string
+}
+
+type UserModel struct {
+	UserID      uint   `json:"user_id" example:"1"`
+	Name        string `json:"name" example:"Budi"`
+	Email       string `json:"email" example:"foo@bar.com"`
+	PhoneNumber string `json:"phone_number" example:"089123123"`
+	Address     string `json:"address" example:"Bandung"`
 }

@@ -19,6 +19,8 @@ func intiRouter(e *echo.Echo, opt handler.HandlerOption) (err error) {
 	healthCheckHandler.HandlerOption = opt
 	authHandler := handler.AuthHandler{}
 	authHandler.HandlerOption = opt
+	userHandler := handler.UserHandler{}
+	userHandler.HandlerOption = opt
 
 	// global middleware
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -33,6 +35,12 @@ func intiRouter(e *echo.Echo, opt handler.HandlerOption) (err error) {
 	apiV1.POST("/login", authHandler.Login)
 	apiV1.POST("/register", authHandler.Register)
 	apiV1.POST("/logout", authHandler.Logout, jwtAuthGuard...)
+
+	apiV1.GET("/users", userHandler.GetAllHandler, jwtAuthGuard...)
+	apiV1.GET("/users/profile", userHandler.GetUserProfile, jwtAuthGuard...)
+	apiV1.POST("/users", userHandler.CreateUser)
+	apiV1.DELETE("/users", userHandler.DeleteUser, jwtAuthGuard...)
+	apiV1.PUT("/users", userHandler.UpdateUser, jwtAuthGuard...)
 	return
 }
 
