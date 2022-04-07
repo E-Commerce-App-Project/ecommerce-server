@@ -1,0 +1,67 @@
+version: "3"
+
+services:
+  web-app:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DB_DRIVER=${DB_DRIVER:-mysql}
+      - DB_USERNAME=${DB_USERNAME:-ecommerce}
+      - DB_PASSWORD=${DB_PASSWORD:-ecommerce}
+      - DB_NAME=${DB_NAME:-ecommerce}
+      - DB_ADDRESS=db
+      - DB_PORT=${DB_PORT:-3306}
+      - REDIS_ADDRESS=redis
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-pass}
+      - APP_HOST=${APP_HOST}
+      - APP_PORT=${APP_PORT}
+      - JWT_SECRET=${JWT_SECRET:-secret}
+    ports:
+      - "80:${APP_PORT:-8000}"
+  # Database
+  db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_NAME:-ecommerce}
+      MYSQL_USER: ${DB_USERNAME:-ecommerce}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-ecommerce}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+  redis:
+    image: 'redis:alpine'
+    ports:
+        - '${REDIS_PORT:-6379}:6379'
+    command: '--requirepass $REDIS_PASSWORD'
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-pass}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+    volumes:
+        - 'redis:/data'
+    healthcheck:
+        test: ["CMD", "redis-cli", "ping"]
+        retries: 3
+        timeout: 5s
+  # phpmyadmin
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+volumes:
+  mysql:
+  redis:
