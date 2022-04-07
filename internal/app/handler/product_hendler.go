@@ -24,15 +24,27 @@ func (ph *ProductHandler) GetAllProduct(c echo.Context) error {
 }
 
 func (ph *ProductHandler) GetProductById(c echo.Context) error {
-	product := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
-	claims := product.Claims.(*payload.JWTCustomClaims)
-	id := claims.UserID
+
+	var id, _ = strconv.Atoi(c.Param("id"))
 
 	products, err := ph.Services.Product.GetProductById(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, payload.ResponseFailed("Failed"))
 	}
 	return c.JSON(http.StatusOK, payload.ResponseSuccess("Success", products))
+}
+
+func (ph *ProductHandler) GetProductByIdUser(c echo.Context) error {
+
+	products := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
+	claims := products.Claims.(*payload.JWTCustomClaims)
+	UserID := int(claims.UserID)
+
+	product, err := ph.Services.Product.GetProductByIdUser(UserID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, payload.ResponseFailed("Failed"))
+	}
+	return c.JSON(http.StatusOK, payload.ResponseSuccess("Success", product))
 }
 
 func (ph *ProductHandler) CreateProduct(c echo.Context) error {

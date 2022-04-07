@@ -9,6 +9,7 @@ import (
 type IProductService interface {
 	GetAllProduct() ([]payload.ProductModel, error)
 	GetProductById(id int) (payload.ProductModel, error)
+	GetProductByIdUser(id int) ([]payload.ProductModel, error)
 	CreateProduct(product payload.CreateProductPayload) (payload.ProductModel, error)
 	DeleteProduct(id, userID int) error
 	UpdateProduct(id, userID int, productplyd payload.CreateProductPayload) (payload.ProductModel, error)
@@ -52,6 +53,22 @@ func (puc *productService) GetProductById(id int) (payload.ProductModel, error) 
 		UserID:      product.UserID,
 	}
 	return productModel, err
+}
+
+func (puc *productService) GetProductByIdUser(id int) ([]payload.ProductModel, error) {
+	product, err := puc.opt.Repository.Product.GetProductByIdUser(id)
+	productmodel := []payload.ProductModel{}
+	for i := 0; i < len(product); i++ {
+		productmodel = append(productmodel, payload.ProductModel{
+			Name:        product[i].Name,
+			Price:       product[i].Price,
+			Description: product[i].Description,
+			Image:       product[i].Image,
+			Stock:       product[i].Stock,
+			UserID:      product[i].UserID,
+		})
+	}
+	return productmodel, err
 }
 
 func (puc *productService) CreateProduct(productplyd payload.CreateProductPayload) (payload.ProductModel, error) {
