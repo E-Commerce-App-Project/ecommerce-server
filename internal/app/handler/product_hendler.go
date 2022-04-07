@@ -14,7 +14,7 @@ type ProductHandler struct {
 	HandlerOption
 }
 
-func (ph *ProductHandler) GetAllProductHandler(c echo.Context) error {
+func (ph *ProductHandler) GetAllProduct(c echo.Context) error {
 
 	products, err := ph.Services.Product.GetAllProduct()
 	if err != nil {
@@ -23,7 +23,7 @@ func (ph *ProductHandler) GetAllProductHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, payload.ResponseSuccess("Success", products))
 }
 
-func (ph *ProductHandler) GetProductByIdHandler(c echo.Context) error {
+func (ph *ProductHandler) GetProductById(c echo.Context) error {
 	product := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
 	claims := product.Claims.(*payload.JWTCustomClaims)
 	id := claims.UserID
@@ -35,7 +35,7 @@ func (ph *ProductHandler) GetProductByIdHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, payload.ResponseSuccess("Success", products))
 }
 
-func (ph *ProductHandler) CreateProductHandler(c echo.Context) error {
+func (ph *ProductHandler) CreateProduct(c echo.Context) error {
 
 	var product payload.CreateProductPayload
 	if err := c.Bind(&product); err != nil {
@@ -57,7 +57,7 @@ func (ph *ProductHandler) CreateProductHandler(c echo.Context) error {
 
 }
 
-func (ph *ProductHandler) DeleteProductHandler(c echo.Context) error {
+func (ph *ProductHandler) DeleteProduct(c echo.Context) error {
 
 	product := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
 	claims := product.Claims.(*payload.JWTCustomClaims)
@@ -71,7 +71,7 @@ func (ph *ProductHandler) DeleteProductHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, payload.ResponseSuccessWithoutData("succes Delete Product"))
 }
 
-func (ph *ProductHandler) UpdateProductHandler(c echo.Context) error {
+func (ph *ProductHandler) UpdateProduct(c echo.Context) error {
 
 	product := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
 	claims := product.Claims.(*payload.JWTCustomClaims)
