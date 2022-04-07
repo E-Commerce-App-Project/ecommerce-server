@@ -17,8 +17,8 @@ services:
       - DB_ADDRESS=db
       - DB_PORT=${DB_PORT:-3306}
       - REDIS_ADDRESS=redis
-      - REDIS_PORT=${REDIS_PORT:-6379}
-      - REDIS_PASSWORD=${REDIS_PASSWORD:-pass}
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=pass
       - APP_HOST=${APP_HOST}
       - APP_PORT=${APP_PORT:-8000}
       - JWT_SECRET=${JWT_SECRET:-secret}
@@ -39,10 +39,10 @@ services:
       - "${DB_PORT:-3306}:3306"
   redis:
     image: 'redis:alpine'
-    command: '--requirepass $REDIS_PASSWORD'
+    command: '--requirepass pass'
     environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD:-pass}
-      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=pass
+      - REDIS_PORT=6379
     volumes:
         - 'redis:/data'
     healthcheck:
@@ -50,7 +50,7 @@ services:
         retries: 3
         timeout: 5s
     ports:
-        - '${REDIS_PORT:-6379}:6379'
+        - '6379:6379'
   # phpmyadmin
   phpmyadmin:
     depends_on:
