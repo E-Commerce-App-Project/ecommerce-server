@@ -16,4 +16,5 @@ type Services struct {
 	HealthCheck IHealthCheck
 	Auth        IAuthService
 	User        IUserService
+	Product     IProductService
 }
