@@ -14,11 +14,11 @@ services:
       - DB_USERNAME=${DB_USERNAME:-ecommerce}
       - DB_PASSWORD=${DB_PASSWORD:-ecommerce}
       - DB_NAME=${DB_NAME:-ecommerce}
-      - DB_ADDRESS=db
+      - DB_ADDRESS=${DB_ADDRESS:-db}
       - DB_PORT=${DB_PORT:-3306}
-      - REDIS_ADDRESS=redis
-      - REDIS_PASSWORD=pass
-      - REDIS_PORT=6379
+      - REDIS_ADDRESS=${REDIS_ADDRESS:-redis}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-pass}
+      - REDIS_PORT=${REDIS_PORT:-6379}
       - APP_HOST=${APP_HOST}
       - APP_PORT=${APP_PORT:-8000}
       - JWT_SECRET=${JWT_SECRET:-secret}
@@ -36,12 +36,12 @@ services:
       MYSQL_USER: ${DB_USERNAME:-ecommerce}
       MYSQL_PASSWORD: ${DB_PASSWORD:-ecommerce}
     ports:
-      - "${DB_PORT:-3306}:3306"
+      - "3306:3306"
   redis:
     image: 'redis:alpine'
-    command: '--requirepass pass'
+    command: '--requirepass $REDIS_PASSWORD'
     environment:
-      - REDIS_PASSWORD=pass
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-pass}
       - REDIS_PORT=6379
     volumes:
         - 'redis:/data'
