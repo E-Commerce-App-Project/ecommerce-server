@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/commons"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/payload"
 	"github.com/golang-jwt/jwt"
@@ -22,7 +21,7 @@ func (uh *UserHandler) GetAllHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, payload.ResponseSuccess("Success", users))
 }
 
-func (uh *UserHandler) GetUserById(c echo.Context) error {
+func (uh *UserHandler) GetUserProfile(c echo.Context) error {
 	user := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
 	claims := user.Claims.(*payload.JWTCustomClaims)
 	id := claims.UserID
@@ -66,12 +65,12 @@ func (uh *UserHandler) UpdateUser(c echo.Context) error {
 	user := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
 	claims := user.Claims.(*payload.JWTCustomClaims)
 	id := claims.UserID
-	var userplyd payload.RegisterPayload
-	fmt.Println(id)
-	if err := c.Bind(&userplyd); err != nil {
+	var userPlyd payload.RegisterPayload
+
+	if err := c.Bind(&userPlyd); err != nil {
 		return c.JSON(http.StatusInternalServerError, payload.ResponseFailed("Failed"))
 	}
-	userModel, err := uh.Services.User.UpdateUser(id, userplyd)
+	userModel, err := uh.Services.User.UpdateUser(id, userPlyd)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, payload.ResponseFailed("Failed"))
 	}

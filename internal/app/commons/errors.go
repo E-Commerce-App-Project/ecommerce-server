@@ -30,12 +30,12 @@ var ErrInvalidData = errors.New("InvalidValueError")
 
 var ErrJWTGenerate = errors.New("JWTGenerateError")
 
-var ErrUpdate = errors.New("Update Error")
+var ErrUpdate = errors.New("UpdateError")
 
-var ErrCreateUser = errors.New("Createe User Error")
+var ErrCreateUser = errors.New("CreateeUserError")
 
-var ErrGetAll = errors.New("Get All Error")
+var ErrGetAll = errors.New("GetAllError")
 
-var ErrGetUserByID = errors.New("Get User By id Error")
+var ErrGetUserByID = errors.New("GetUserByIdError")
 
-var ErrDeleteUser = errors.New("Delete User Error")
+var ErrDeleteUser = errors.New("DeleteUserError")

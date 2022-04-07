@@ -68,8 +68,6 @@ func (ur *userRepository) DeleteUser(id int) error {
 func (ur *userRepository) UpdateUser(id int, user database.UserEntity) (database.UserEntity, error) {
 
 	tx := ur.opt.DbMysql.Where("id = ?", id).Updates(&user)
-	fmt.Println(tx.Error)
-	fmt.Println(id)
 	if tx.Error != nil {
 		return user, commons.ErrUpdate
 	}

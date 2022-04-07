@@ -37,7 +37,7 @@ func intiRouter(e *echo.Echo, opt handler.HandlerOption) (err error) {
 	apiV1.POST("/logout", authHandler.Logout, jwtAuthGuard...)
 
 	apiV1.GET("/users", userHandler.GetAllHandler, jwtAuthGuard...)
-	apiV1.GET("/users/profile", userHandler.GetUserById, jwtAuthGuard...)
+	apiV1.GET("/users/profile", userHandler.GetUserProfile, jwtAuthGuard...)
 	apiV1.POST("/users", userHandler.CreateUser)
 	apiV1.DELETE("/users", userHandler.DeleteUser, jwtAuthGuard...)
 	apiV1.PUT("/users", userHandler.UpdateUser, jwtAuthGuard...)
