@@ -21,6 +21,8 @@ func intiRouter(e *echo.Echo, opt handler.HandlerOption) (err error) {
 	authHandler.HandlerOption = opt
 	userHandler := handler.UserHandler{}
 	userHandler.HandlerOption = opt
+	productHandler := handler.ProductHandler{}
+	productHandler.HandlerOption = opt
 
 	// global middleware
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -41,6 +43,13 @@ func intiRouter(e *echo.Echo, opt handler.HandlerOption) (err error) {
 	apiV1.POST("/users", userHandler.CreateUser)
 	apiV1.DELETE("/users", userHandler.DeleteUser, jwtAuthGuard...)
 	apiV1.PUT("/users", userHandler.UpdateUser, jwtAuthGuard...)
+
+	apiV1.GET("/products", productHandler.GetAllProductHandler, jwtAuthGuard...)
+	apiV1.GET("/products/profile", productHandler.GetProductByIdHandler, jwtAuthGuard...)
+	apiV1.POST("/products", productHandler.CreateProductHandler, jwtAuthGuard...)
+	apiV1.DELETE("/products/:id", productHandler.DeleteProductHandler, jwtAuthGuard...)
+	apiV1.PUT("/products/:id", productHandler.UpdateProductHandler, jwtAuthGuard...)
+
 	return
 }
 

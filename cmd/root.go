@@ -84,10 +84,12 @@ func wiringRepository(repoOption repository.Option) *repository.Repository {
 	cacheRepo := repository.NewCacheRepository(repoOption)
 	userRepo := repository.NewUserRepository(repoOption)
 	authRepo := repository.NewAuthRepository(repoOption)
+	productRepo := repository.NewProductRepository(repoOption)
 	repo := repository.Repository{
-		Auth:  authRepo,
-		Cache: cacheRepo,
-		User:  userRepo,
+		Auth:    authRepo,
+		Cache:   cacheRepo,
+		User:    userRepo,
+		Product: productRepo,
 	}
 
 	return &repo
@@ -97,10 +99,12 @@ func wiringService(serviceOption service.Option) *service.Services {
 	hc := service.NewHealthCheck(serviceOption)
 	user := service.NewUserService(serviceOption)
 	auth := service.NewAuthService(serviceOption)
+	product := service.NewProductService(serviceOption)
 	svc := service.Services{
 		HealthCheck: hc,
 		Auth:        auth,
 		User:        user,
+		Product:     product,
 	}
 
 	return &svc

@@ -12,3 +12,12 @@ type RegisterPayload struct {
 	Password string `json:"password" example:"secret" form:"password"`
 	Address  string `json:"address" example:"Jl. Jenderal Sudirman No. 1" form:"address"`
 } //@name RegisterPayload
+
+type CreateProductPayload struct {
+	Name        string `json:"name" example:"sepatu"`
+	Price       int    `json:"price" example:"500000"`
+	Description string `json:"description" example:"Sepatu lari"`
+	Image       string `json:"image" example:"image"`
+	Stock       int    `json:"stock" example:"10"`
+	UserID      uint   `json:"user_id" example:"1"`
+}
