@@ -109,6 +109,9 @@ func readViperConfig() *viper.Viper {
 	v.SetDefault("DB_NAME", os.Getenv("DB_NAME"))
 	v.SetDefault("DB_ADDRESS", os.Getenv("DB_ADDRESS"))
 	v.SetDefault("DB_PORT", os.Getenv("DB_PORT"))
+	v.SetDefault("REDIS_ADDRESS", os.Getenv("REDIS_ADDRESS"))
+	v.SetDefault("REDIS_PORT", os.Getenv("REDIS_PORT"))
+	v.SetDefault("REDIS_PASSWORD", os.Getenv("REDIS_PASSWORD"))
 	v.SetDefault("DB_USERNAME", os.Getenv("DB_USERNAME"))
 	v.SetDefault("DB_PASSWORD", os.Getenv("DB_PASSWORD"))
 

@@ -51,7 +51,7 @@ func (a *AppContext) getCacheOption() driver.CacheOption {
 		Port:               cachedConfig.Port,
 		Password:           cachedConfig.Password,
 		DialConnectTimeout: time.Second * 5,
-		Namespace:          "2",
+		Namespace:          "0",
 		ReadTimeout:        time.Second * 5,
 		WriteTimeout:       time.Second * 5,
 		MaxIdle:            5,
