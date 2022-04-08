@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/commons"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/payload"
 	"github.com/golang-jwt/jwt"
@@ -36,11 +35,7 @@ func (ph *ProductHandler) GetProductById(c echo.Context) error {
 
 func (ph *ProductHandler) GetProductByIdUser(c echo.Context) error {
 
-	products := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
-	claims := products.Claims.(*payload.JWTCustomClaims)
-	UserID := int(claims.UserID)
-
-	product, err := ph.Services.Product.GetProductByIdUser(UserID)
+	product, err := ph.Services.Product.GetProductByIdUser()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, payload.ResponseFailed("Failed"))
 	}
@@ -51,7 +46,7 @@ func (ph *ProductHandler) CreateProduct(c echo.Context) error {
 
 	var product payload.CreateProductPayload
 	if err := c.Bind(&product); err != nil {
-		fmt.Println(err)
+
 		return c.JSON(http.StatusInternalServerError, payload.ResponseFailed("Failed"))
 	}
 
