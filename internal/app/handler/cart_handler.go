@@ -40,7 +40,7 @@ func (ch CartHandler) AddToCart(ctx echo.Context) error {
 	addToCartPayload.UserID = id
 	cart, err := ch.Services.Cart.AddToCart(addToCartPayload)
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, payload.ResponseFailedWithData("Failed to add to cart", err))
+		return ctx.JSON(http.StatusInternalServerError, payload.ResponseFailed(err.Error()))
 	}
 
 	return ctx.JSON(http.StatusOK, payload.ResponseSuccess("Successfully add to cart", cart))

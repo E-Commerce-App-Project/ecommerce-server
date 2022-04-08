@@ -43,6 +43,7 @@ func (cr *cartRepository) AddToCart(cartPyld payload.AddProductToCartPayload) ([
 		// get cart
 		return cr.UpdateCart(payload.UpdateCartPayload{
 			CartID:   int(cartItem.ID),
+			UserID:   cartPyld.UserID,
 			Quantity: cartPyld.Quantity + cartItem.TotalProduct,
 		})
 	}
@@ -84,7 +85,7 @@ func (cr *cartRepository) FindProductInCart(productID int, userID int) (database
 func (cr *cartRepository) UpdateCart(cartPyld payload.UpdateCartPayload) ([]payload.CartModel, error) {
 
 	var cartItem database.CartItemEntity
-	err := cr.opt.DbMysql.Preload("ProductEntity").Model(&database.CartItemEntity{}).Where("id = ? AND user_id = ?", cartPyld.CartID, cartPyld.UserID).First(&cartItem).Error
+	err := cr.opt.DbMysql.Preload("Product").Model(&database.CartItemEntity{}).Where("id = ? AND user_id = ?", cartPyld.CartID, cartPyld.UserID).First(&cartItem).Error
 
 	if cartItem.Product.Stock < cartPyld.Quantity {
 		return []payload.CartModel{}, commons.ErrOutOfStock
