@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/commons"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/payload"
 	"github.com/golang-jwt/jwt"
@@ -51,7 +50,7 @@ func (ph *ProductHandler) CreateProduct(c echo.Context) error {
 
 	var product payload.CreateProductPayload
 	if err := c.Bind(&product); err != nil {
-		fmt.Println(err)
+
 		return c.JSON(http.StatusInternalServerError, payload.ResponseFailed("Failed"))
 	}
 

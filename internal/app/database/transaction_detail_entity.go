@@ -1,6 +1,9 @@
 package database
 
+import "gorm.io/gorm"
+
 type TransactionDetailEntity struct {
+	gorm.Model
 	ID            uint64 `gorm:"primary_key" json:"id"`
 	TransactionID uint64 `gorm:"not null" json:"transaction_id"`
 	ProductID     uint64 `gorm:"not null" json:"product_id"`

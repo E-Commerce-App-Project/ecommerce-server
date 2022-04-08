@@ -37,7 +37,7 @@ func (ur *productRepository) GetAllProduct() ([]database.ProductEntity, error) {
 
 func (ur *productRepository) GetProductById(id int) (database.ProductEntity, error) {
 	var products database.ProductEntity
-	tx := ur.opt.DbMysql.Where("id = ?", id).First(&products)
+	tx := ur.opt.DbMysql.First(&products)
 	if tx.Error != nil {
 		return products, commons.ErrGetUserByID
 	}
