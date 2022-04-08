@@ -32,11 +32,11 @@ type JWTClaimResult struct {
 }
 
 type CartModel struct {
-	ID        uint    `json:"id" example:"1"`
-	UserID    uint    `json:"user_id" example:"1"`
-	ProductID uint    `json:"product_id" example:"1"`
-	Image     string  `json:"image" example:"https://example.com/image.jpg"`
-	Name      string  `json:"name" example:"Product Name"`
-	Price     float64 `json:"price" example:"10000"`
-	Quantity  uint    `json:"quantity" example:"1"`
+	ID        uint   `json:"id" example:"1"`
+	UserID    uint   `json:"user_id" example:"1"`
+	ProductID uint   `json:"product_id" example:"1"`
+	Image     string `json:"image" example:"https://example.com/image.jpg"`
+	Name      string `json:"name" example:"Product Name"`
+	Price     int    `json:"price" example:"10000"`
+	Quantity  uint   `json:"quantity" example:"1"`
 }

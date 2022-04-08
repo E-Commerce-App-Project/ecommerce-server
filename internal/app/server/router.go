@@ -36,6 +36,10 @@ func intiRouter(e *echo.Echo, opt handler.HandlerOption) (err error) {
 	apiV1.POST("/register", authHandler.Register)
 	apiV1.POST("/logout", authHandler.Logout, jwtAuthGuard...)
 	apiV1.GET("/cart", cartHandler.GetCart, jwtAuthGuard...)
+	apiV1.POST("/cart", cartHandler.AddToCart, jwtAuthGuard...)
+	apiV1.DELETE("/cart", cartHandler.DeleteCart, jwtAuthGuard...)
+	apiV1.POST("/cart/checkout", cartHandler.Checkout, jwtAuthGuard...)
+	apiV1.PUT("/cart/:id", cartHandler.UpdateCart, jwtAuthGuard...)
 	return
 }
 

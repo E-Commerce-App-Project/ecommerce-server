@@ -83,11 +83,13 @@ func start(opt commons.Options) {
 func wiringRepository(repoOption repository.Option) *repository.Repository {
 	cacheRepo := repository.NewCacheRepository(repoOption)
 	authRepo := repository.NewAuthRepository(repoOption)
+	transactionRepo := repository.NewTransactionRepository(repoOption)
 	cartRepo := repository.NewCartRepository(repoOption)
 	repo := repository.Repository{
-		Auth:  authRepo,
-		Cache: cacheRepo,
-		Cart:  cartRepo,
+		Auth:        authRepo,
+		Cache:       cacheRepo,
+		Cart:        cartRepo,
+		Transaction: transactionRepo,
 	}
 
 	return &repo
