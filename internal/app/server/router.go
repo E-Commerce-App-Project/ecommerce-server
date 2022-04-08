@@ -21,6 +21,10 @@ func intiRouter(e *echo.Echo, opt handler.HandlerOption) (err error) {
 	authHandler.HandlerOption = opt
 	cartHandler := handler.CartHandler{}
 	cartHandler.HandlerOption = opt
+	userHandler := handler.UserHandler{}
+	userHandler.HandlerOption = opt
+	productHandler := handler.ProductHandler{}
+	productHandler.HandlerOption = opt
 
 	// global middleware
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -40,6 +44,20 @@ func intiRouter(e *echo.Echo, opt handler.HandlerOption) (err error) {
 	apiV1.DELETE("/cart", cartHandler.DeleteCart, jwtAuthGuard...)
 	apiV1.POST("/cart/checkout", cartHandler.Checkout, jwtAuthGuard...)
 	apiV1.PUT("/cart/:id", cartHandler.UpdateCart, jwtAuthGuard...)
+
+	apiV1.GET("/users", userHandler.GetAllHandler, jwtAuthGuard...)
+	apiV1.GET("/users/profile", userHandler.GetUserProfile, jwtAuthGuard...)
+	apiV1.POST("/users", userHandler.CreateUser)
+	apiV1.DELETE("/users", userHandler.DeleteUser, jwtAuthGuard...)
+	apiV1.PUT("/users", userHandler.UpdateUser, jwtAuthGuard...)
+
+	apiV1.GET("/products", productHandler.GetAllProduct)
+	apiV1.GET("/products/:id", productHandler.GetProductById)
+	apiV1.GET("/products/profile", productHandler.GetProductByIdUser)
+	apiV1.POST("/products", productHandler.CreateProduct, jwtAuthGuard...)
+	apiV1.DELETE("/products/:id", productHandler.DeleteProduct, jwtAuthGuard...)
+	apiV1.PUT("/products/:id", productHandler.UpdateProduct, jwtAuthGuard...)
+
 	return
 }
 

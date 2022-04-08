@@ -23,6 +23,7 @@ type AuthModel struct {
 type JWTCustomClaims struct {
 	Email  string `json:"email"`
 	UserID int    `json:"user_id"`
+
 	jwt.StandardClaims
 }
 
@@ -39,4 +40,21 @@ type CartModel struct {
 	Name      string `json:"name" example:"Product Name"`
 	Price     int    `json:"price" example:"10000"`
 	Quantity  uint   `json:"quantity" example:"1"`
+}
+
+type UserModel struct {
+	UserID      uint   `json:"user_id" example:"1"`
+	Name        string `json:"name" example:"Budi"`
+	Email       string `json:"email" example:"foo@bar.com"`
+	PhoneNumber string `json:"phone_number" example:"089123123"`
+	Address     string `json:"address" example:"Bandung"`
+}
+
+type ProductModel struct {
+	Name        string `json:"name" example:"sepatu"`
+	Price       int    `json:"price" example:"500000"`
+	Description string `json:"description" example:"Sepatu lari"`
+	Image       string `json:"image" example:"image"`
+	Stock       int    `json:"stock" example:"10"`
+	UserID      uint   `json:"user_id" example:"1"`
 }

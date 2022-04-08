@@ -14,4 +14,6 @@ type Repository struct {
 	Cache       ICacheRepository
 	Cart        ICartRepository
 	Transaction ITransactionRepository
+	User        IUserRepository
+	Product     IProductRepository
 }
