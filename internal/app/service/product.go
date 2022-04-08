@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/database"
 	"github.com/E-Commerce-App-Project/ecommerce-server/internal/app/payload"
 )
@@ -37,6 +38,7 @@ func (puc *productService) GetAllProduct() ([]payload.ProductModel, error) {
 			Image:       product[i].Image,
 			Stock:       product[i].Stock,
 			UserID:      product[i].UserID,
+			ProductID:   product[i].ID,
 		})
 	}
 	return productmodel, err
@@ -51,6 +53,7 @@ func (puc *productService) GetProductById(id int) (payload.ProductModel, error) 
 		Image:       product.Image,
 		Stock:       product.Stock,
 		UserID:      product.UserID,
+		ProductID:   product.ID,
 	}
 	return productModel, err
 }
@@ -66,6 +69,7 @@ func (puc *productService) GetProductByIdUser() ([]payload.ProductModel, error) 
 			Image:       product[i].Image,
 			Stock:       product[i].Stock,
 			UserID:      product[i].UserID,
+			ProductID:   product[i].ID,
 		})
 	}
 	return productmodel, err
@@ -90,6 +94,7 @@ func (puc *productService) CreateProduct(productplyd payload.CreateProductPayloa
 		Image:       product.Image,
 		Stock:       product.Stock,
 		UserID:      product.UserID,
+		ProductID:   product.ID,
 	}
 
 	return productModel, err
@@ -118,6 +123,7 @@ func (puc *productService) UpdateProduct(id, userID int, productplyd payload.Cre
 		Image:       product.Image,
 		Stock:       product.Stock,
 		UserID:      product.UserID,
+		ProductID:   product.ID,
 	}
 	return productModel, err
 }

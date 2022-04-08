@@ -57,4 +57,5 @@ type ProductModel struct {
 	Image       string `json:"image" example:"image"`
 	Stock       int    `json:"stock" example:"10"`
 	UserID      uint   `json:"user_id" example:"1"`
+	ProductID   uint   `json:"product_id" example:"1"`
 }
