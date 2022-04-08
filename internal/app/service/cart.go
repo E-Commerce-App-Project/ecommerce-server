@@ -68,10 +68,10 @@ func (cs *cartService) Checkout(checkoutPyld payload.CheckoutPayload) (database.
 	}
 
 	pickedItem := []payload.CartModel{}
-	for i, cartItemID := range checkoutPyld.CartItemIDs {
+	for _, cartItemID := range checkoutPyld.CartItemIDs {
 		for _, cart := range carts {
 			if cart.ID == uint(cartItemID) {
-				pickedItem = append(pickedItem, carts[i])
+				pickedItem = append(pickedItem, cart)
 			}
 		}
 	}

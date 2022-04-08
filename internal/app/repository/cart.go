@@ -117,7 +117,7 @@ func (cr *cartRepository) DeleteCart(delPyld payload.DeleteUserCartPayload) bool
 		return false
 	}
 
-	err = cr.opt.DbMysql.Delete(&cartItem).Error
+	tx := cr.opt.DbMysql.Delete(&cartItem)
 
-	return err != nil
+	return tx.RowsAffected > 0 && tx.Error == nil
 }
