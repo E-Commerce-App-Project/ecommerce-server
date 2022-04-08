@@ -1,9 +1,6 @@
 package database
 
-import "gorm.io/gorm"
-
 type CartItemEntity struct {
-	gorm.Model
 	ID           uint64        `gorm:"primary_key" json:"id"`
 	TotalProduct int           `gorm:"not null" json:"total_product"`
 	TotalPrice   int           `gorm:"not null" json:"total_price"`
