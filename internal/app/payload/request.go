@@ -20,7 +20,7 @@ type AddProductToCartPayload struct {
 } //@name AddProductToCartPayload
 
 type UpdateCartPayload struct {
-	CartID   int `json:"product_id" example:"1" form:"product_id"`
+	CartID   int `json:"cart_id" example:"1" form:"cart_id"`
 	Quantity int `json:"quantity" example:"1" form:"quantity"`
 	UserID   int `json:"user_id" example:"1" form:"user_id"`
 } //@name AddProductToCartPayload
