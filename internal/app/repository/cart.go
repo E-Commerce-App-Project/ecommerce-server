@@ -79,6 +79,10 @@ func (cr *cartRepository) FindProductInCart(productID int, userID int) (database
 		return cart, tx.Error
 	}
 
+	if tx.RowsAffected == 0 {
+		return cart, commons.ErrNotFound
+	}
+
 	return cart, nil
 }
 

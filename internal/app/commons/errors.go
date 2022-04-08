@@ -45,3 +45,5 @@ var ErrEmptyCart = errors.New("EmptyCartError")
 var ErrInvalidCartItem = errors.New("InvalidCartItemError")
 
 var ErrAddTransaction = errors.New("AddTransactionError")
+
+var ErrNotFound = errors.New("NotFoundError")
