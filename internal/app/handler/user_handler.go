@@ -22,11 +22,9 @@ func (uh *UserHandler) GetAllHandler(c echo.Context) error {
 }
 
 func (uh *UserHandler) GetUserProfile(c echo.Context) error {
-	user := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
-	claims := user.Claims.(*payload.JWTCustomClaims)
-	id := claims.UserID
+	//
 
-	users, err := uh.Services.User.GetUserById(id)
+	users, err := uh.Services.User.GetUserById()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, payload.ResponseFailed("Failed"))
 	}

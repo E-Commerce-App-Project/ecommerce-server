@@ -8,7 +8,7 @@ import (
 
 type IUserRepository interface {
 	GetAll() ([]database.UserEntity, error)
-	GetUserById(id int) (database.UserEntity, error)
+	GetUserById() (database.UserEntity, error)
 	CreateUser(user database.UserEntity) (database.UserEntity, error)
 	DeleteUser(id int) error
 	UpdateUser(id int, user database.UserEntity) (database.UserEntity, error)
@@ -34,9 +34,9 @@ func (ur *userRepository) GetAll() ([]database.UserEntity, error) {
 
 }
 
-func (ur *userRepository) GetUserById(id int) (database.UserEntity, error) {
+func (ur *userRepository) GetUserById() (database.UserEntity, error) {
 	var users database.UserEntity
-	tx := ur.opt.DbMysql.Where("id = ?", id).First(&users)
+	tx := ur.opt.DbMysql.First(&users)
 	if tx.Error != nil {
 		return users, commons.ErrGetUserByID
 	}

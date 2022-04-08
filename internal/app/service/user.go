@@ -8,7 +8,7 @@ import (
 
 type IUserService interface {
 	GetAll() ([]payload.UserModel, error)
-	GetUserById(id int) (payload.UserModel, error)
+	GetUserById() (payload.UserModel, error)
 	CreateUser(user payload.RegisterPayload) (payload.UserModel, error)
 	DeleteUser(id int) error
 	UpdateUser(id int, userplyd payload.RegisterPayload) (payload.UserModel, error)
@@ -39,8 +39,8 @@ func (us *userService) GetAll() ([]payload.UserModel, error) {
 	return usersModel, err
 }
 
-func (us *userService) GetUserById(id int) (payload.UserModel, error) {
-	user, err := us.opt.Repository.User.GetUserById(id)
+func (us *userService) GetUserById() (payload.UserModel, error) {
+	user, err := us.opt.Repository.User.GetUserById()
 	userModel := payload.UserModel{
 		UserID:      user.ID,
 		Name:        user.Name,
