@@ -15,4 +15,5 @@ type Option struct {
 type Services struct {
 	HealthCheck IHealthCheck
 	Auth        IAuthService
+	Cart        ICartService
 }

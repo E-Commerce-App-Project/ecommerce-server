@@ -12,3 +12,41 @@ type RegisterPayload struct {
 	Password string `json:"password" example:"secret" form:"password"`
 	Address  string `json:"address" example:"Jl. Jenderal Sudirman No. 1" form:"address"`
 } //@name RegisterPayload
+
+type AddProductToCartPayload struct {
+	ProductID int `json:"product_id" example:"1" form:"product_id"`
+	Quantity  int `json:"quantity" example:"1" form:"quantity"`
+	UserID    int `json:"user_id" example:"1" form:"user_id"`
+} //@name AddProductToCartPayload
+
+type UpdateCartPayload struct {
+	CartID   int `json:"product_id" example:"1" form:"product_id"`
+	Quantity int `json:"quantity" example:"1" form:"quantity"`
+	UserID   int `json:"user_id" example:"1" form:"user_id"`
+} //@name AddProductToCartPayload
+
+type GetUserCartPayload struct {
+	UserID int `json:"user_id" example:"1" form:"user_id"`
+} //@name GetUserCartPayload
+
+type DeleteUserCartPayload struct {
+	UserID     int `json:"user_id" example:"1" form:"user_id"`
+	CartItemID int `json:"cart_item_id" example:"1" form:"cart_item_id"`
+} //@name DeleteUserCartPayload
+
+type CheckoutPayload struct {
+	UserID      int   `json:"user_id" example:"1" form:"user_id"`
+	CartItemIDs []int `json:"cart_item_ids" example:"1,2,3" form:"cart_item_ids"`
+}
+
+type TransactionPayload struct {
+	UserID     int                      `json:"user_id" example:"1" form:"user_id"`
+	TotalPrice int                      `json:"total" example:"1" form:"total"`
+	CartItems  []TransactionItemPayload `json:"detail" example:"[{\"product_id\":1,\"quantity\":1,\"price\":1}]" form:"detail"`
+}
+
+type TransactionItemPayload struct {
+	ProductID int `json:"product_id" example:"1" form:"product_id"`
+	Quantity  int `json:"quantity" example:"1" form:"quantity"`
+	Price     int `json:"price" example:"1" form:"price"`
+}

@@ -29,3 +29,21 @@ var ErrInvalidCredential = errors.New("InvalidCredentialError")
 var ErrInvalidData = errors.New("InvalidValueError")
 
 var ErrJWTGenerate = errors.New("JWTGenerateError")
+
+var ErrQueryDB = errors.New("QueryDBError")
+
+var ErrOutOfStock = errors.New("OutOfStockError")
+
+var ErrAddCart = errors.New("AddCartError")
+
+var ErrUpdateCart = errors.New("UpdateCartError")
+
+var ErrDeleteCart = errors.New("DeleteCartError")
+
+var ErrEmptyCart = errors.New("EmptyCartError")
+
+var ErrInvalidCartItem = errors.New("InvalidCartItemError")
+
+var ErrAddTransaction = errors.New("AddTransactionError")
+
+var ErrNotFound = errors.New("NotFoundError")
