@@ -35,11 +35,7 @@ func (ph *ProductHandler) GetProductById(c echo.Context) error {
 
 func (ph *ProductHandler) GetProductByIdUser(c echo.Context) error {
 
-	products := c.Get(commons.CTX_USER_KEY).(*jwt.Token)
-	claims := products.Claims.(*payload.JWTCustomClaims)
-	UserID := int(claims.UserID)
-
-	product, err := ph.Services.Product.GetProductByIdUser(UserID)
+	product, err := ph.Services.Product.GetProductByIdUser()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, payload.ResponseFailed("Failed"))
 	}

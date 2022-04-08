@@ -9,7 +9,7 @@ import (
 type IProductRepository interface {
 	GetAllProduct() ([]database.ProductEntity, error)
 	GetProductById(id int) (database.ProductEntity, error)
-	GetProductByIdUser(id int) ([]database.ProductEntity, error)
+	GetProductByIdUser() ([]database.ProductEntity, error)
 	CreateProduct(product database.ProductEntity) (database.ProductEntity, error)
 	DeleteProduct(id, userID int) error
 	UpdateProduct(id, userID int, product database.ProductEntity) (database.ProductEntity, error)
@@ -45,9 +45,9 @@ func (ur *productRepository) GetProductById(id int) (database.ProductEntity, err
 
 }
 
-func (ur *productRepository) GetProductByIdUser(id int) ([]database.ProductEntity, error) {
+func (ur *productRepository) GetProductByIdUser() ([]database.ProductEntity, error) {
 	var products []database.ProductEntity
-	tx := ur.opt.DbMysql.Where("user_id = ?", id).Find(&products)
+	tx := ur.opt.DbMysql.Find(&products)
 	if tx.Error != nil {
 		return products, commons.ErrGetUserByID
 	}
